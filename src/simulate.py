@@ -8,8 +8,8 @@ Duffing equation (second-order nonlinear ODE with physical form):
     m x'' + δ x' + k x + α x³ = F cos(ω t)
 
 Converted to a first-order system:
-    Let x₁ = x           → position
-        x₂ = x'          → velocity
+    Let x₁ = x → position
+        x₂ = x' → velocity
     Then:
         dx₁/dt = x₂
         dx₂/dt = (1/m) [ -δ x₂ - k x₁ - α x₁³ + F cos(ω t) ]
