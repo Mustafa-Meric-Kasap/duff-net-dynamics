@@ -1,0 +1,184 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{Modeling the Dynamics of the Duffing Oscillator Using Neural Network}
+\author{Mustafa Meriç Kasap}
+\date{June 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+
+
+
+
+
+
+
+
+
+
+
+%% Section 2 - Theoretical Background
+\section{Theoretical Background}
+
+% 2.1 The Duffing Equation of Motion
+\subsection{The Duffing Equation of Motion}
+
+The Duffing oscillator is a canonical example of a nonlinear dynamical system and serves as a prototypical model for understanding complex oscillatory behavior, including bifurcations and chaos. It extends the linear damped driven harmonic oscillator by incorporating a nonlinear restoring force.
+
+Starting from Newton’s second law applied to a mass-spring-damper system subjected to an external periodic force, the Duffing equation takes the form:
+
+\begin{equation}
+    m\ddot{x} + \delta \dot{x} + kx + \alpha x^3 = F \cos(\omega t)
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $x(t)$ is the displacement of the oscillator as a function of time,
+    \item $m$ is the mass,
+    \item $\delta$ is the linear damping coefficient,
+    \item $k$ is the linear stiffness coefficient,
+    \item $\alpha$ is the coefficient of the cubic (nonlinear) stiffness,
+    \item $F$ is the amplitude of the external periodic force,
+    \item $\omega$ is the angular frequency of the external force.
+\end{itemize}
+
+This equation includes three key physical effects:
+\begin{enumerate}
+    \item \textbf{Damping} $(\delta \dot{x})$: models energy dissipation, typically due to friction or resistance.
+    \item \textbf{Restoring Force} $(kx + \alpha x^3)$: the term $kx$ represents the traditional linear spring force, while $\alpha x^3$ introduces a nonlinear stiffness, causing the system’s response to depend nonlinearly on displacement.
+    \item \textbf{External Forcing} $(F \cos(\omega t))$: drives the system periodically, introducing the potential for complex resonances and chaos depending on the values of $F$ and $\omega$.
+\end{enumerate}
+
+When $k < 0$ and $\alpha > 0$, the system exhibits a \textit{double-well potential}, which gives rise to multiple equilibrium points and enables a rich set of dynamical behaviors — including periodic, quasi-periodic, and chaotic motion depending on initial conditions and parameter values. This configuration is especially notable for its capacity to produce \textit{chaotic transitions}, making it an ideal testbed for nonlinear dynamics and neural network-based modeling.
+
+
+% There are citations below:
+From a historical and mathematical perspective, the Duffing oscillator is one of the best-studied nonlinear systems in classical mechanics. As described by \textit{Kovacic \& Brennan (2011)}, it encapsulates the fundamental features of nonlinearity — amplitude-dependent frequencies, multi-stability, and sensitivity to initial conditions — and serves as a model for physical systems ranging from electronic circuits to micro-mechanical resonators. \textit{Strogatz (1994)} emphasizes the Duffing system’s importance in teaching because of its analytical simplicity yet qualitative richness.
+
+In preparation for numerical and neural modeling, we typically nondimensionalize the equation by setting $m = 1$, which simplifies the analysis:
+
+\begin{equation}
+    \ddot{x} + \delta \dot{x} + kx + \alpha x^3 = F \cos(\omega t)
+\end{equation}
+
+This form will be used throughout the remainder of the paper for both analytical and computational treatments.
+
+
+% 2.2 Potential Energy U(x)
+\subsection{Potential Energy}
+
+The potential energy function associated with the Duffing oscillator plays a central role in determining the qualitative behavior of the system. By analyzing this potential, we can better understand the equilibrium points, stability, and types of motion the oscillator can exhibit.
+
+For the unforced and undamped Duffing system (i.e., with $\delta = 0$ and $F = 0$), the equation of motion simplifies to:
+
+\begin{equation}
+    m\ddot{x} + kx + \alpha x^3 = 0
+\end{equation}
+
+This corresponds to a conservative system, where the motion can be derived from a potential energy function $U(x)$. To identify this function, we integrate the restoring force:
+
+\begin{equation}
+    F_{\text{restoring}} = -kx - \alpha x^3 \quad \Rightarrow \quad U(x) = \int -F_{\text{restoring}} \, dx = \frac{1}{2}kx^2 + \frac{1}{4}\alpha x^4
+\end{equation}
+
+This potential consists of a quadratic term (harmonic) and a quartic (nonlinear) term. The nature of the potential depends critically on the sign of the coefficients:
+
+\begin{itemize}
+    \item If $k > 0$, the potential is a single-well centered at $x = 0$, similar to the standard harmonic oscillator but stiffened by the quartic term.
+    \item If $k < 0$ and $\alpha > 0$, the potential becomes a \textit{double-well}, with two minima and a local maximum at the origin. This case is of particular interest in nonlinear dynamics, as it gives rise to bistability and chaotic transitions under driving forces.
+\end{itemize}
+
+A plot of $U(x)$ for $k < 0$, $\alpha > 0$ reveals two symmetric wells, indicating the existence of two stable equilibrium points (local minima) and one unstable point at $x = 0$. The system can oscillate within one well or transition between the wells depending on the initial energy and driving force.
+
+The double-well potential landscape explains many phenomena observed in Duffing dynamics, such as hysteresis, bifurcations, and sensitivity to initial conditions. It is also the source of rich phase-space structures, such as separatrices and chaotic attractors, when damping and periodic driving are introduced.
+
+This potential function will be useful later when we analyze the energy evolution of the system and assess whether the neural network models capture energy-like behavior.
+
+%%%% TODO: Insert plot of $U(x)$ for $k < 0$ and $\alpha > 0$ (double-well potential)
+
+
+% 2.3 Phase Space and Dynamics
+\subsection{Phase Space and Dynamics}
+
+To analyze the dynamics of the Duffing oscillator beyond its solution trajectories over time, it is common to reformulate the second-order differential equation into a first-order system. This allows us to study the system in \textit{phase space}, where the state of the system is represented by both its position and velocity at each moment in time.
+
+We introduce the state variables:
+
+\begin{equation}
+    x_1 = x, \quad x_2 = \dot{x}
+\end{equation}
+
+Then, the second-order Duffing equation:
+
+\begin{equation}
+    \ddot{x} + \delta \dot{x} + kx + \alpha x^3 = F \cos(\omega t)
+\end{equation}
+
+can be written as a system of first-order differential equations:
+
+\begin{equation}
+\begin{cases}
+    \dot{x}_1 = x_2 \\
+    \dot{x}_2 = -\delta x_2 - kx_1 - \alpha x_1^3 + F \cos(\omega t)
+\end{cases}
+\end{equation}
+
+This state-space representation enables visualization of the system's behavior using \textit{phase portraits}, which plot velocity versus position (i.e., $\dot{x}$ vs. $x$). These portraits provide deep qualitative insights into the types of motion the system can exhibit.
+
+Depending on the system parameters and initial conditions, the Duffing oscillator can demonstrate a range of dynamical behaviors:
+
+\begin{itemize}
+    \item \textbf{Periodic motion}: The trajectory in phase space forms closed loops or limit cycles. This corresponds to regular, repeating oscillations.
+    \item \textbf{Quasi-periodic motion}: The trajectory does not repeat but remains confined to a bounded region in a non-repeating pattern, often forming tori in higher-dimensional systems.
+    \item \textbf{Chaotic motion}: The trajectory appears irregular and non-repeating, yet remains bounded. Small changes in initial conditions lead to drastically different long-term behavior, a hallmark of deterministic chaos.
+\end{itemize}
+
+As we will see in later sections, these different regimes emerge depending on parameters like the forcing amplitude $F$, the damping $\delta$, and the frequency $\omega$. For instance, at certain resonance conditions and with sufficient forcing, the system can transition from periodic to chaotic dynamics — a transition that is clearly visible in the phase portrait.
+
+The phase-space approach is not only central to classical mechanics but also forms the basis for assessing how well our neural network models capture the underlying dynamics. In particular, we will compare predicted and true trajectories in phase space to evaluate the quality of learned models.
+
+% TODO: Insert example phase portraits:
+% - One periodic motion (closed loops)
+% - One chaotic motion (scattered orbits)
+% - Optional: Overlay predicted vs. true trajectories
+% - Optional: 3D state trajectory (x, \dot{x}, t)
+
+
+% 2.4 Hamiltonian Perspective
+\subsection{2.4 Hamiltonian Perspective}
+
+In the absence of damping and external forcing (i.e., $\delta = 0$, $F = 0$), the Duffing oscillator is a \textit{conservative system}, and its dynamics can be described by a Hamiltonian function — representing the total mechanical energy of the system.
+
+The Hamiltonian is given by the sum of kinetic and potential energy:
+
+\begin{equation}
+    H = T + U = \frac{1}{2}m\dot{x}^2 + \frac{1}{2}kx^2 + \frac{1}{4}\alpha x^4
+\end{equation}
+
+Here:
+\begin{itemize}
+    \item $T = \frac{1}{2}m\dot{x}^2$ is the kinetic energy,
+    \item $U(x) = \frac{1}{2}kx^2 + \frac{1}{4}\alpha x^4$ is the potential energy function derived earlier.
+\end{itemize}
+
+In this idealized, undriven, and undamped case, the total energy $H$ is conserved, and the motion of the system is confined to constant-energy contours in phase space. The system exhibits predictable periodic or quasi-periodic motion depending on the energy level and initial conditions.
+
+However, in the \textit{general Duffing oscillator}, where damping $\delta$ and external driving $F \cos(\omega t)$ are present, the system becomes \textit{non-conservative}:
+\begin{itemize}
+    \item Damping causes energy to dissipate over time,
+    \item Driving continuously injects energy into the system.
+\end{itemize}
+
+These competing effects break strict energy conservation and make the Hamiltonian $H$ time-dependent and \textit{non-conserved}. As a result, the energy of the system fluctuates, and the motion can evolve from regular to chaotic. This sensitivity to initial conditions and lack of conservation is a defining feature of \textit{deterministic chaos}.
+
+Despite the lack of energy conservation in the full system, the Hamiltonian form still provides valuable intuition and a baseline for understanding how far the dynamics deviate from conservative behavior — especially when comparing true vs. learned trajectories in later sections.
+
+% TODO: (Optional) Plot $H(t)$ for a damped-driven trajectory to visualize non-conservation
+
+
+\end{document}
