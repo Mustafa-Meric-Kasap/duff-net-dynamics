@@ -15,8 +15,8 @@ This project investigates the use of Recurrent Neural Networks, specifically LST
 -  Includes both **chaotic and regular regimes**.
 -  **Numerical integration** using SciPy's RK45 via `solve_ivp`.
 -  **Neural network forecasting** using:
-  - Recursive (step-by-step) LSTM
-  - Multi-step (direct sequence prediction) LSTM
+    - Recursive (step-by-step) LSTM
+    - Multi-step (direct sequence prediction) LSTM
 -  Visual and quantitative comparisons using MSE, MAE, R², and phase space plots.
 
 ---
