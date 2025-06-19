@@ -5,7 +5,7 @@ Mustafa Meriç Kasap, PHYS201, Koç University – Spring 2025
 
 ## Overview
 
-This project investigates the use of Recurrent Neural Networks—specifically LSTM architectures—to model the behavior of the Duffing oscillator, a nonlinear dynamical system known for its chaotic properties. We simulate hundreds of trajectories, train two different forecasting models (recursive and multi-step), and evaluate their ability to capture the oscillator's physical and dynamical properties.
+This project investigates the use of Recurrent Neural Networks, specifically LSTM architectures, to model the behavior of the Duffing oscillator, a nonlinear dynamical system known for its chaotic properties. We simulate hundreds of trajectories, train two different forecasting models (recursive and multi-step), and evaluate their ability to capture the oscillator's physical and dynamical properties.
 
 ---
 
@@ -120,7 +120,7 @@ If your work involves more than one scope, combine prefixes:
 
 ### Best Practices
 - Use `kebab-case` for descriptions (e.g., `no_spaces_orCamelCase`)
-- Keep `main` clean and production-ready — only merge tested code
+- Keep `main` clean and production-ready, only merge tested code
 
 ---
 
