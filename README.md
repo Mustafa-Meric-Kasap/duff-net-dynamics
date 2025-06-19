@@ -119,13 +119,13 @@ duff-net-dynamics-main/
 
 ---
 
-## 📚 References
+## References
 
 - Kovacic, I., & Brennan, M. J. (2011). *The Duffing Equation: Nonlinear Oscillators and their Behaviour*.
 - Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos*.
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
