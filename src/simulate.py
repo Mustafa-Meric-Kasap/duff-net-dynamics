@@ -103,8 +103,8 @@ for F in F_values:
 
                         # Save to CSV: columns = [t, x, v]
                         np.savetxt(filename, data, delimiter=",", header="t,x,v", comments="")
-                        print(f"✅ Saved: {filename} (std_x={x_std:.3f}, std_v={v_std:.3f})")
+                        print(f"Saved: {filename} (std_x={x_std:.3f}, std_v={v_std:.3f})")
                         sim_id += 1
                     else:
                         # Skip if the trajectory is too static (no useful learning signal)
-                        print(f"⏩ Skipped sim_{sim_id:03d} (std_x={x_std:.3f}, std_v={v_std:.3f})")
+                        print(f"Skipped sim_{sim_id:03d} (std_x={x_std:.3f}, std_v={v_std:.3f})")
